@@ -1,54 +1,59 @@
 import random
 
 
-def player():
-    rps = 0
-    while not rps in [1, 2, 3]:
-        rps = int(input("1 for Rock, 2 for Paper, 3 for Scissors: "))
-        if not rps in [1, 2, 3]:
-            print("ERROR")
-    if rps == 1:
-        print("You chose Rock")
-        return "Rock"
-    elif rps == 2:
-        print("You chose Paper")
-        return "Paper"
-    else:
-        print("You chose Scissors")
-        return "Scissors"
+def get_player_choice():
+    """Get the player's choice with input validation."""
+    choice = 0
+    while choice not in [1, 2, 3]:
+        try:
+            choice = int(input("1 for Rock, 2 for Paper, 3 for Scissors: "))
+            if choice not in [1, 2, 3]:
+                print("ERROR: Please enter a valid choice.")
+        except ValueError:
+            print("ERROR: Please enter a number.")
+    return ["Rock", "Paper", "Scissors"][choice - 1]
 
 
-def comp():
-    crps = random.randint(1, 3)
-    if crps == 1:
-        print("The Computer chooses Rock")
-        return "Rock"
-    elif crps == 2:
-        print("The Computer chooses Paper")
-        return "Paper"
-    else:
-        print("The Computer chooses Scissors")
-        return "Scissors"
+def get_computer_choice():
+    """Generate the computer's choice."""
+    choice = random.choice(["Rock", "Paper", "Scissors"])
+    print(f"The Computer chooses {choice}")
+    return choice
 
 
-def win(crps, rps):
-    if rps == crps:
+def determine_winner(player_choice, computer_choice):
+    """Determine the outcome of the round."""
+    if player_choice == computer_choice:
         return "Tie"
-    return "Win" if (rps == 1 and crps == 3) or (rps == 3 and crps == 2) or (rps == 2 and crps == 1) else "Lose"
+    elif (player_choice == "Rock" and computer_choice == "Scissors") or \
+         (player_choice == "Scissors" and computer_choice == "Paper") or \
+         (player_choice == "Paper" and computer_choice == "Rock"):
+        return "Win"
+    else:
+        return "Lose"
+
+
+def display_results(results):
+    """Display the summary of all rounds played."""
+    print("#" * 49 + "\n######### Rock, Paper, Scissors Report ##########\n" + "#" * 49)
+    print("-------------------------------------------------")
+    print("|Round| User Played | Computer Played | Outcome |")
+    print("-------------------------------------------------")
+    for round_num, player, computer, outcome in results:
+        print(f"| {round_num:^3} | {player:^12}| {
+              computer:^14} | {outcome:^7} |")
+        print("-------------------------------------------------")
 
 
 def main():
     results = []
     for i in range(5):
-        rps = player()
-        crps = comp()
-        result = win(crps, rps)
-        results.append((i + 1, rps, crps, result))
-    print("#" * 49 + "\n######### Rock, Paper, Scissors Report ##########\n" + "#" * 49)
-    print("-------------------------------------------------\n|Round| User Played | Computer Played | Outcome |\n-------------------------------------------------")
-    for round_num, rps, crps, result in results:
-        print(f"| {round_num:^3} | {rps:^12}|  {
-              crps:^14} | {result:^7} |\n-------------------------------------------------")
+        player_choice = get_player_choice()
+        print(f"You chose {player_choice}")
+        computer_choice = get_computer_choice()
+        outcome = determine_winner(player_choice, computer_choice)
+        results.append((i + 1, player_choice, computer_choice, outcome))
+    display_results(results)
 
 
 if __name__ == "__main__":
