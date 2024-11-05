@@ -1,6 +1,20 @@
 import random
 
 
+def header():
+    print("""
+.-. .-. .-. . .     .-. .-. .-. .-. .-.     .-. .-. .-. .-. .-. .-. .-. .-. 
+|(  | | |   |<      |-' |-| |-' |-  |(      `-. |    |  `-. `-. | | |(  `-. 
+' ' `-' `-' ' ` ,   '   ` ' '   `-' ' ' ,   `-' `-' `-' `-' `-' `-' ' ' `-' 
+    _______           _______               _______ 
+---'   ____)      ---'   ____)____     ---'    ____)____ 
+      (_____)               ______)               ______) 
+      (_____)               _______)           __________) 
+      (____)               _______)           (____) 
+---.__(___)       ---.__________)      ---.__(___)
+           """)
+
+
 def get_player_choice():
     """Get the player's choice with input validation."""
     choice = 0
@@ -46,6 +60,7 @@ def display_results(results):
 
 
 def main():
+    header()
     results = []
     for i in range(5):
         player_choice = get_player_choice()
